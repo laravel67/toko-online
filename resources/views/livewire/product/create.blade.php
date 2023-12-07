@@ -4,7 +4,7 @@
     <div class="form-row">
         <div class="form-group col-md-6">
             <label for="title">Nama Produk</label>
-            <input type="text" wire:model='title' name="title" class="form-control @error('title')
+            <input type="text" wire:model.blur='title' name="title" class="form-control @error('title')
                                 is-invalid
                             @enderror" id="title" placeholder="nama produk" value="{{ old('title') }}">
             @error('title')
@@ -33,7 +33,6 @@
     <div class="form-row">
         <div class="form-group col-md-4">
             <label>Gambar Produk</label>
-        
             {{-- Check if not editing --}}
             @if (!$isEditing)
             <input type="file" wire:model="image" name="image" id="imageInput"
@@ -45,7 +44,7 @@
             {{-- Editing mode --}}
             @else
             <input type="file" wire:model="image" name="image" id="imageInput"
-                class="form-control-file mb-2 @error('image') is-invalid @enderror">
+                class="form-control-file mb-2 @error('image') is-invalid @enderror" value="{{ $image }}">
             {{-- Display new image preview if available --}}
             @if ($image && is_object($image))
             <img width="200" class="img-fluid img-preview" src="{{ $image->temporaryUrl() }}">
@@ -54,7 +53,6 @@
             <img width="200" class="img-fluid img-preview" src="{{ $imageOld }}">
             <p class="text-muted">Gambar saat ini</p>
             @endif
-        
             @endif
         </div>
         {{-- <div class="form-group col-md-6">

@@ -10,7 +10,7 @@
                             {{ session('success') }}
                         </div>
                     @endif
-                    @livewire('counter')
+                    @livewire('shop.shop')
                 </div>
             </div>
         </div>

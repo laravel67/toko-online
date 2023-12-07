@@ -20,7 +20,7 @@ class ProductFactory extends Factory
             'title' => $this->faker->word(),
             'deskripsi' => $this->faker->text(120),
             'price' => $this->faker->numberBetween(10000, 100000),
-            'image' => ''
+            'image' => null,
         ];
     }
 }

@@ -15,7 +15,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('home');
+    return view('home.home');
 });
 
 Route::get('/product', [ProductController::class, 'index'])->name('product');
+Route::get('/shop', [ProductController::class, 'shop'])->name('shop');
+Route::get('/cart', [ProductController::class, 'cart'])->name('cart');
+Route::get('/checkout', [ProductController::class, 'checkout'])->name('checkout');
+Route::post('/pay', [ProductController::class, 'pay'])->name('pay');

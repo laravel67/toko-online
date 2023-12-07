@@ -43,7 +43,16 @@
                             <tr>
                                 <th class="scope">{{ $products->firstItem() + $index }}</th>
                                 <td>
-                                    <img width="200" src="{{ asset('storage/products/'. $p->image) }}" alt="" srcset="">
+                                    @if ($p->image)
+                                    <div style="width: 50px">
+                                        <img src="{{ asset('storage/products/'. $p->image) }}" alt="" class="card-img-top" width="30">
+                                    </div>
+                                    @else
+                                        <div style="width: 50px">
+                                            <img src="https://placehold.jp/008a22/ffffff/50x50.png" alt="" class="card-img-top" width="30">
+                                        </div>
+                                    @endif
+                                </td>
                                 <td>{{ $p->title }}</td>
                                 <td>Rp. {{ number_format($p->price,2,",",".") }}</td>
                                 <td>

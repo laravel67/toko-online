@@ -25,6 +25,12 @@ class Index extends Component
     public $formVisible;
     public $formUpdate = false;
 
+    protected $rules = [
+        'title' => 'required|min:3',
+        'deskripsi' => 'required|max:255',
+        'price' => 'numeric|required',
+        'image' => 'image|max:1024|nullable',
+    ];
     // protected $listeners = [
     //     'formClose' => 'formCloseHandler',
     //     'stored' => 'storedHandler',
@@ -91,41 +97,39 @@ class Index extends Component
     // Update
     public function update()
     {
-        $this->validate([
-            'title' => 'required|min:3',
-            'deskripsi' => 'required|max:255',
-            'price' => 'numeric|required',
-            'image' => 'image|max:1024|nullable',
-        ]);
+        $this->validate();
 
         if ($this->editedDataId) {
             $product = Product::find($this->editedDataId);
-            $image = '';
+            $image = $product->image; // Tetapkan nilai awal sebagai default
+
             if ($this->image) {
+                // Hapus gambar lama jika ada
                 if ($product->image) {
                     Storage::delete('public/products/' . $product->image);
                 }
+                // Simpan gambar yang baru di storage
                 $imageName = pathinfo($this->image->getClientOriginalName(), PATHINFO_FILENAME);
                 $imageName .= '.' . $this->image->getClientOriginalExtension();
                 $this->image->storeAs('public/products', $imageName);
                 $image = $imageName;
-            } else {
-                $image = $product->image;
             }
 
-            // Update product information
-            $product->update([
+            // Gunakan metode update() pada model Eloquent untuk mengupdate record
+            $values = [
                 'title' => $this->title,
                 'deskripsi' => $this->deskripsi,
                 'price' => $this->price,
-                'image' => $image,
-            ]);
+                'image' => $image, // Gunakan $image yang sudah diupdate
+            ];
+
+            // Gunakan metode update() pada model Eloquent untuk mengupdate record
+            $product->update($values);
 
             $this->resetForm();
-            session()->flash('message', 'Produk berhasil ubah!');
+            session()->flash('message', 'Produk berhasil diubah!');
         }
     }
-    // Reset FORM
     private function resetForm()
     {
         $this->title = '';
@@ -135,12 +139,10 @@ class Index extends Component
         $this->isEditing = false;
         $this->editedDataId = null;
     }
-    // Cancel
     public function cancel()
     {
         $this->resetForm();
     }
-
     public function destroy($delete_id)
     {
         $product = Product::find($delete_id);
